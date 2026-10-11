@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
 import { allPosts } from './util/generated-posts'
 
-const POSTS_PER_PAGE = 5
+const POSTS_PER_PAGE = 6
 
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl

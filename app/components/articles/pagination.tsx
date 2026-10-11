@@ -72,7 +72,7 @@ export default function Pagination({
   )
 }
 
-export const POSTS_PER_PAGE = 5
+export const POSTS_PER_PAGE = 6
 
 export function getTotalPages(totalPosts: number): number {
   return Math.max(1, Math.ceil(totalPosts / POSTS_PER_PAGE))
