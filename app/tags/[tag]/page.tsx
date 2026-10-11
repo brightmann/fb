@@ -65,8 +65,14 @@ export default async function BlogPage ({ params }: Props) {
   let views: Record<string, number> = {}
 
   if (postKeys.length > 0) {
-    views = (await redis.mget<number[]>(...postKeys)).reduce((acc, v, i) => {
-      acc[sortedPosts[i].slug] = v ?? 0
+    let counts: (number | null)[] = []
+    try {
+      counts = await redis.mget<number[]>(...postKeys)
+    } catch (e) {
+      console.error('view counts unavailable', e)
+    }
+    views = sortedPosts.reduce((acc, post, i) => {
+      acc[post.slug] = counts[i] ?? 0
       return acc
     }, {} as Record<string, number>)
   }
