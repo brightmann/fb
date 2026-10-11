@@ -62,8 +62,13 @@ export default async function PostPage ({ params }: Props) {
     notFound()
   }
 
-  const views =
-    (await redis.get<number>(['pageviews', 'posts', slug].join(':'))) ?? 0
+  let views = 0
+  try {
+    views =
+      (await redis.get<number>(['pageviews', 'posts', slug].join(':'))) ?? 0
+  } catch (e) {
+    console.error('view count unavailable', e)
+  }
 
   return (
     <>
