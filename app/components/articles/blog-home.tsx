@@ -29,7 +29,15 @@ export default async function BlogHome({ page }: { page: number }) {
   }
 
   const thereAreFourPosts = allPosts.length >= 4
-  let sorted = allPosts
+  // The article grid paginates over ALL published posts, newest first.
+  // (The Top Articles showcase above is separate and doesn't reduce the grid.)
+  const sorted = allPosts
+    .filter(post => post.published)
+    .sort(
+      (a, b) =>
+        new Date(b.date ?? Number.POSITIVE_INFINITY).getTime() -
+        new Date(a.date ?? Number.POSITIVE_INFINITY).getTime()
+    )
   // define featured, top2, top3 as type Post
   let featured = allPosts[0]
   let top2 = allPosts[0]
@@ -45,19 +53,6 @@ export default async function BlogHome({ page }: { page: number }) {
     top3 = allPosts.find(
       post => post?.slug === 'how-to-install-multiple-versions-nodejs-nvm'
     )!
-    sorted = allPosts
-      .filter(post => post.published)
-      .filter(
-        post =>
-          post?.slug !== featured.slug &&
-          post?.slug !== top2?.slug &&
-          post?.slug !== top3?.slug
-      )
-      .sort(
-        (a, b) =>
-          new Date(b.date ?? Number.POSITIVE_INFINITY).getTime() -
-          new Date(a.date ?? Number.POSITIVE_INFINITY).getTime()
-      )
   }
 
   const totalPages = getTotalPages(sorted.length)

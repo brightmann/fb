@@ -16,7 +16,8 @@ export function middleware(request: NextRequest) {
   const match = pathname.match(/^\/page\/(\d+)$/)
   if (match) {
     const page = parseInt(match[1], 10)
-    const totalPages = Math.max(1, Math.ceil(allPosts.length / POSTS_PER_PAGE))
+    const publishedCount = allPosts.filter(p => p.published).length
+    const totalPages = Math.max(1, Math.ceil(publishedCount / POSTS_PER_PAGE))
     if (isNaN(page) || page < 1 || page > totalPages) {
       // Rewrite to a 404 by returning a not-found response
       return new NextResponse('Page not found', { status: 404 })
