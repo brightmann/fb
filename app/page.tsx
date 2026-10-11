@@ -19,12 +19,16 @@ export const revalidate = 60
 export default async function BlogPage () {
   let views: Record<string, number> = {}
   if (allPosts.length > 0) {
-    views = (
-      await redis.mget<number[]>(
+    let counts: (number | null)[] = []
+    try {
+      counts = await redis.mget<number[]>(
         ...allPosts.map(post => ['pageviews', 'posts', post?.slug].join(':'))
       )
-    ).reduce((acc, v, i) => {
-      acc[allPosts[i].slug] = v ?? 0
+    } catch (e) {
+      console.error('view counts unavailable', e)
+    }
+    views = allPosts.reduce((acc, post, i) => {
+      acc[post.slug] = counts[i] ?? 0
       return acc
     }, {} as Record<string, number>)
   }
