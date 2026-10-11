@@ -1,9 +1,10 @@
 import redis from "@/lib/redis";
 import { NextRequest, NextResponse } from "next/server";
 
-export const config = {
-  runtime: "edge",
-};
+// NOTE: no `runtime: "edge"` here — opennextjs-cloudflare cannot bundle
+// pages/api routes with the edge runtime ("edge runtime function must be
+// defined in a separate function"). The route runs in the Workers runtime
+// via OpenNext's server handler regardless.
 
 export default async function incr(req: NextRequest): Promise<NextResponse> {
   if (req.method !== "POST") {
