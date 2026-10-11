@@ -1,4 +1,4 @@
-import { Post } from '@/.contentlayer/generated'
+import type { Post } from '@/util/generated-posts'
 import { allTags } from '@/util/data'
 import Image from 'next/image'
 import Link from 'next/link'

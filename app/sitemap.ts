@@ -1,8 +1,5 @@
-import { allPostsDev } from '@/util/monks'
-import { allPosts as allPostsProd } from 'contentlayer/generated'
+import { allPosts } from '@/util/generated-posts'
 import { allTags } from '@/util/data'
-const allPosts: typeof allPostsProd =
-  process.env.NODE_ENV === 'development' ? allPostsDev : allPostsProd
 
 export default async function sitemap () {
   const site_url =

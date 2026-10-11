@@ -1,26 +1,10 @@
-export const runtime = 'nodejs'
-
 import RSS from 'rss'
-import fs from 'fs'
-import path from 'path'
 import { marked } from 'marked'
-import matter from 'gray-matter'
 import { RSSHeader } from '../components/content/rss-header'
+import { allPosts } from '@/util/generated-posts'
 
-const posts = fs
-  .readdirSync('./content/posts')
-  .filter(file => path.extname(file) === '.mdx')
-  .map(file => {
-    const postContent = fs.readFileSync(`./content/posts/${file}`, 'utf8')
-    const { data, content }: { data: any; content: string } =
-      matter(postContent)
-    return { ...data, body: content, slug: file.replace('.mdx', '') }
-  })
-  .sort(
-    (a, b) =>
-      new Date(b.date ?? Number.POSITIVE_INFINITY).getTime() -
-      new Date(a.date ?? Number.POSITIVE_INFINITY).getTime()
-  )
+// allPosts is generated at build time (scripts/build-content.mjs), newest first.
+const posts = allPosts.filter(post => post.published)
 
 const renderer = new marked.Renderer()
 
@@ -56,7 +40,7 @@ export async function GET () {
   })
 
   posts.map(post => {
-    const readTime = Math.ceil(post.body.split(/\s+/).length / 200).toString()
+    const readTime = post.readTime.toString()
 
     const props = {
       hero: post.hero,
@@ -68,7 +52,7 @@ export async function GET () {
 
     const articleHeader = RSSHeader(props)
     const htmlArticle = `${articleHeader}<article style="text-wrap: balance;">${renderPost(
-      post.body
+      post.body.raw
     )}</article>`
 
     feed.item({

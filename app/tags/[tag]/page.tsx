@@ -1,15 +1,13 @@
 import React from 'react'
 import { Navigation } from '../../components/nav/nav'
 import { Article } from '../../components/articles/article'
-import { Redis } from '@upstash/redis'
+import redis from '@/lib/redis'
 import { ArticlesByTags } from '../../components/tags/articles-by-tags'
 import { allTags } from '@/util/data'
 import { Metadata, ResolvingMetadata } from 'next'
 import '@/styles/home.css'
-import { allPosts } from 'contentlayer/generated'
-//import allPosts from '@/util/monks'
+import { allPosts } from '@/util/generated-posts'
 
-const redis = Redis.fromEnv()
 
 type Props = {
   params: {

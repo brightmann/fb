@@ -1,6 +1,6 @@
 'use client'
 
-import type { Post } from '@/.contentlayer/generated'
+import type { Post } from '@/util/generated-posts'
 import Link from 'next/link'
 import { Eye } from 'lucide-react'
 import Image from 'next/image'

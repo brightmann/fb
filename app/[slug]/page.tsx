@@ -4,30 +4,18 @@ import dynamic from 'next/dynamic'
 const Header = dynamic(() => import('../components/content/header'))
 import '@/styles/mdx.css'
 import { ReportView } from '../components/content/view'
-import { Redis } from '@upstash/redis'
+import redis from '@/lib/redis'
 import Image from 'next/image'
 import { Metadata, ResolvingMetadata } from 'next'
 import Link from 'next/link'
 const Subscribe = dynamic(() => import('../components/footer/subscribe'))
 import { allTags } from '@/util/data'
-import { allPosts } from 'contentlayer/generated'
-//import allPosts from '@/util/monks'
-
-export const revalidate = 60
-const redis = Redis.fromEnv()
+import { allPosts } from '@/util/generated-posts'
 
 type Props = {
   params: {
     slug: string
   }
-}
-
-export async function generateStaticParams (): Promise<Props['params'][]> {
-  return allPosts
-    .filter(post => post.published)
-    .map(p => ({
-      slug: p.slug
-    }))
 }
 
 export async function generateMetadata (
@@ -153,7 +141,7 @@ export default async function PostPage ({ params }: Props) {
         </small>
 
         <article className='max-w-6xl mx-auto md:max-w-4xl px-4 md:px-8 content pb-12'>
-          <Mdx code={post.body.code} />
+          <Mdx slug={post.slug} />
         </article>
         <Subscribe />
       </section>

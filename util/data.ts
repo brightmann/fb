@@ -1,7 +1,4 @@
-import { allPosts as allPostsProd } from 'contentlayer/generated'
-import { allPostsDev } from '@/util/monks'
-const allPosts: typeof allPostsProd =
-  process.env.NODE_ENV === 'development' ? allPostsDev : allPostsProd
+import { allPosts } from './generated-posts'
 
 type tag = {
   name: string

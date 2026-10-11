@@ -1,5 +1,4 @@
-import { allPosts } from 'contentlayer/generated'
-//import allPosts from '@/util/monks'
+import { allPosts } from '@/util/generated-posts'
 
 export default function Page () {
   const postsJSON = JSON.stringify(allPosts, null, 2)

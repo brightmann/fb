@@ -4,16 +4,14 @@ import React from 'react'
 import dynamic from 'next/dynamic'
 const Navigation = dynamic(() => import('./components/nav/nav'))
 import { Article } from './components/articles/article'
-import { Redis } from '@upstash/redis'
+import redis from '@/lib/redis'
 import { Eye } from 'lucide-react'
 import Image from 'next/image'
 const ArticlesByTags = dynamic(
   () => import('./components/tags/articles-by-tags')
 )
-import { allPosts } from 'contentlayer/generated'
-//import allPosts from '@/util/monks'
+import { allPosts } from '@/util/generated-posts'
 
-const redis = Redis.fromEnv()
 
 export const revalidate = 60
 export default async function BlogPage () {

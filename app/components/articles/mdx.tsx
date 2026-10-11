@@ -1,27 +1,21 @@
-// @ts-nocheck
-import * as React from "react";
-import Image from "next/image";
-import Link from "next/link";
-import { useMDXComponent } from "next-contentlayer/hooks";
-
-function clsx(...args: any) {
-	return args.filter(Boolean).join(" ");
-}
-
-const components = {
-	Image,
-};
+import { notFound } from 'next/navigation'
+import { getMdxComponent } from '@/util/compiled/registry'
 
 interface MdxProps {
-	code: string;
+  slug: string
 }
 
-export function Mdx({ code }: MdxProps) {
-	const Component = useMDXComponent(code);
-
-	return (
-		<div className="mdx">
-			<Component components={components} />
-		</div>
-	);
+// Post bodies are precompiled at build time (scripts/compile-mdx.mjs) into
+// static components. next-contentlayer's useMDXComponent evaluates code with
+// new Function(), which is forbidden on Cloudflare Workers.
+export function Mdx({ slug }: MdxProps) {
+  const Component = getMdxComponent(slug)
+  if (!Component) {
+    notFound()
+  }
+  return (
+    <div className="mdx">
+      <Component />
+    </div>
+  )
 }

@@ -1,16 +1,13 @@
 import { BlogCard } from './blog-card'
 import { Search } from 'lucide-react'
-import { allPostsDev } from '@/util/monks'
-import { allPosts as allPostsProd } from 'contentlayer/generated'
-const allPosts: typeof allPostsProd =
-  process.env.NODE_ENV === 'development' ? allPostsDev : allPostsProd
+import { allPosts } from '@/util/generated-posts'
 
 export const SearchResult = ({ searchTerm }: { searchTerm: string }) => {
   const filteredPosts = allPosts.filter(post => {
     const title = post.title.toLowerCase()
     const description = post.description.toLowerCase()
     const tags = post.tags?.map(tag => tag.toLowerCase())
-    const body = post.body.code?.toLowerCase()
+    const body = post.body.raw?.toLowerCase()
     const search = searchTerm.toLowerCase()
 
     return (
